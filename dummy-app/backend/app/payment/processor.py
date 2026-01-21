@@ -20,9 +20,10 @@ import random
 router = APIRouter()
 
 # INTENTIONAL VULNERABILITY: Hardcoded payment credentials
-STRIPE_SECRET_KEY = "sk_live_51234567890abcdefghijklmnop"
-STRIPE_PUBLISHABLE_KEY = "pk_live_51234567890abcdefghijklmnop"
-PAYMENT_WEBHOOK_SECRET = "whsec_1234567890abcdefghij"
+# These are dummy/test keys for E2E testing - R3 Agent should detect these as secrets
+STRIPE_SECRET_KEY = "sk_test_51234567890abcdefghijklmnopqrstuvwxyz123456"
+STRIPE_PUBLISHABLE_KEY = "pk_test_51234567890abcdefghijklmnopqrstuvwxyz123456"
+PAYMENT_WEBHOOK_SECRET = "whsec_test_1234567890abcdefghijklmnopqrstuvwxyz"
 
 
 class PaymentMethod(BaseModel):
