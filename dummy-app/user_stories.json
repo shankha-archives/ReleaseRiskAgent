@@ -1,0 +1,389 @@
+[
+  {
+    "id": "US-001",
+    "title": "User Login with Email/Password",
+    "persona": "registered user",
+    "want": "log in with my email and password",
+    "so_that": "I can access my account securely",
+    "acceptance_criteria": [
+      "POST /api/auth/login endpoint accepts email and password",
+      "Returns JWT token on successful authentication",
+      "Returns 401 with error message for invalid credentials",
+      "Password is validated against bcrypt hash",
+      "Login attempts are rate-limited to 5 per minute"
+    ],
+    "priority": "critical",
+    "epic": "Authentication",
+    "component": "auth",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-002",
+    "title": "OAuth 2.0 Google Login",
+    "persona": "new user",
+    "want": "sign up using my Google account",
+    "so_that": "I can quickly create an account without remembering another password",
+    "acceptance_criteria": [
+      "GET /api/auth/oauth/google redirects to Google authorization",
+      "Callback endpoint exchanges code for tokens",
+      "User profile created from Google profile data",
+      "Existing users linked by email are logged in",
+      "Session JWT issued after successful OAuth flow"
+    ],
+    "priority": "high",
+    "epic": "Authentication",
+    "component": "auth",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-003",
+    "title": "Login Page UI",
+    "persona": "user",
+    "want": "see a clean login form with email and password fields",
+    "so_that": "I can easily enter my credentials",
+    "acceptance_criteria": [
+      "Email input with validation indicator",
+      "Password input with show/hide toggle",
+      "Submit button disabled until form is valid",
+      "Loading spinner during authentication",
+      "Error messages displayed inline",
+      "Link to forgot password and sign up"
+    ],
+    "priority": "critical",
+    "epic": "Authentication",
+    "component": "auth",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-004",
+    "title": "OAuth Social Login Buttons",
+    "persona": "user",
+    "want": "see Google and GitHub login buttons on the login page",
+    "so_that": "I can choose to authenticate with my social accounts",
+    "acceptance_criteria": [
+      "Google sign-in button with official branding",
+      "GitHub sign-in button with official branding",
+      "Buttons redirect to OAuth authorization URL",
+      "Loading state shown during redirect",
+      "Error handling for OAuth failures"
+    ],
+    "priority": "high",
+    "epic": "Authentication",
+    "component": "auth",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-005",
+    "title": "Process Credit Card Payment",
+    "persona": "customer",
+    "want": "pay for my order using a credit card",
+    "so_that": "I can complete my purchase securely",
+    "acceptance_criteria": [
+      "POST /api/payment/charge accepts card token and amount",
+      "Integration with Stripe PaymentIntent API",
+      "Idempotency key prevents duplicate charges",
+      "Webhook handles async payment confirmation",
+      "Transaction record stored with status",
+      "Refund endpoint available for failed orders"
+    ],
+    "priority": "critical",
+    "epic": "Payments",
+    "component": "payment",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-006",
+    "title": "Payment Form with Stripe Elements",
+    "persona": "customer",
+    "want": "enter my card details in a secure form",
+    "so_that": "my payment information is protected",
+    "acceptance_criteria": [
+      "Stripe Elements embedded card input",
+      "Real-time card validation feedback",
+      "Card brand icon displayed (Visa, Mastercard, etc.)",
+      "Submit button shows processing state",
+      "Success confirmation with order number",
+      "Error messages for declined cards"
+    ],
+    "priority": "critical",
+    "epic": "Payments",
+    "component": "payment",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-007",
+    "title": "Payment History API",
+    "persona": "customer",
+    "want": "retrieve my payment history",
+    "so_that": "I can track my past transactions",
+    "acceptance_criteria": [
+      "GET /api/payment/history returns paginated transactions",
+      "Filter by date range and status",
+      "Includes amount, date, status, and receipt URL",
+      "Only returns transactions for authenticated user",
+      "Supports cursor-based pagination"
+    ],
+    "priority": "medium",
+    "epic": "Payments",
+    "component": "payment",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-008",
+    "title": "Create User Account",
+    "persona": "new user",
+    "want": "create an account with my email and password",
+    "so_that": "I can access the platform",
+    "acceptance_criteria": [
+      "POST /api/users/register accepts email, password, name",
+      "Password hashed with bcrypt before storage",
+      "Email uniqueness validated",
+      "Verification email sent asynchronously",
+      "Returns user object without password"
+    ],
+    "priority": "high",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-009",
+    "title": "Update User Profile",
+    "persona": "logged-in user",
+    "want": "update my profile information",
+    "so_that": "I can keep my details current",
+    "acceptance_criteria": [
+      "PUT /api/users/profile accepts name, bio, avatar_url",
+      "Only authenticated user can update own profile",
+      "Partial updates supported (PATCH semantics)",
+      "Validation for field lengths and formats",
+      "Returns updated user object"
+    ],
+    "priority": "medium",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-010",
+    "title": "User Profile Page",
+    "persona": "logged-in user",
+    "want": "view and edit my profile on a dedicated page",
+    "so_that": "I can manage my account information",
+    "acceptance_criteria": [
+      "Display current profile data (name, email, avatar)",
+      "Edit mode toggle for inline editing",
+      "Avatar upload with preview",
+      "Save and cancel buttons",
+      "Success toast on save",
+      "Form validation with inline errors"
+    ],
+    "priority": "medium",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-011",
+    "title": "Registration Form UI",
+    "persona": "new user",
+    "want": "fill out a registration form with validation",
+    "so_that": "I can create my account correctly",
+    "acceptance_criteria": [
+      "Email, password, confirm password, and name fields",
+      "Password strength indicator",
+      "Password match validation",
+      "Terms and conditions checkbox",
+      "Submit disabled until form valid",
+      "Redirect to login after success"
+    ],
+    "priority": "high",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-012",
+    "title": "List Users (Admin)",
+    "persona": "admin",
+    "want": "view a list of all users",
+    "so_that": "I can manage user accounts",
+    "acceptance_criteria": [
+      "GET /api/users returns paginated user list",
+      "Admin-only access (role check)",
+      "Search by name or email",
+      "Sort by created_at, name, or email",
+      "Includes user status and role"
+    ],
+    "priority": "medium",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-013",
+    "title": "Delete User Account",
+    "persona": "user",
+    "want": "delete my account permanently",
+    "so_that": "I can remove my data from the platform",
+    "acceptance_criteria": [
+      "DELETE /api/users/me requires password confirmation",
+      "Soft delete with 30-day recovery window",
+      "Associated data anonymized",
+      "Confirmation email sent",
+      "Session invalidated immediately"
+    ],
+    "priority": "low",
+    "epic": "User Management",
+    "component": "users",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-014",
+    "title": "Email Validation Utility",
+    "persona": "developer",
+    "want": "validate email format consistently",
+    "so_that": "email validation is reusable across the codebase",
+    "acceptance_criteria": [
+      "Function accepts string and returns boolean",
+      "Validates against RFC 5322 regex pattern",
+      "Handles null, undefined, empty string gracefully",
+      "Supports international domain names",
+      "Unit tests cover edge cases"
+    ],
+    "priority": "low",
+    "epic": "Utilities",
+    "component": "utils",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-015",
+    "title": "Password Strength Validator",
+    "persona": "developer",
+    "want": "check password strength with a utility function",
+    "so_that": "password policies are enforced consistently",
+    "acceptance_criteria": [
+      "Returns strength score (0-4) and feedback messages",
+      "Checks length, uppercase, lowercase, numbers, symbols",
+      "Configurable minimum requirements",
+      "Returns specific suggestions for improvement",
+      "100% unit test coverage"
+    ],
+    "priority": "low",
+    "epic": "Utilities",
+    "component": "utils",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-016",
+    "title": "Date Formatting Helpers",
+    "persona": "developer",
+    "want": "format dates consistently in the UI",
+    "so_that": "date display is uniform across components",
+    "acceptance_criteria": [
+      "formatDate(date, format) utility function",
+      "Supports relative time (e.g., '2 hours ago')",
+      "Locale-aware formatting",
+      "Handles invalid dates gracefully",
+      "Jest tests for all format options"
+    ],
+    "priority": "low",
+    "epic": "Utilities",
+    "component": "utils",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-017",
+    "title": "API Error Handler Utility",
+    "persona": "developer",
+    "want": "handle API errors consistently",
+    "so_that": "error handling is standardized across the frontend",
+    "acceptance_criteria": [
+      "Parses error response and extracts message",
+      "Maps HTTP status codes to user-friendly messages",
+      "Handles network errors and timeouts",
+      "Triggers toast notifications",
+      "Logs errors to monitoring service"
+    ],
+    "priority": "low",
+    "epic": "Utilities",
+    "component": "utils",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-018",
+    "title": "JWT Token Refresh",
+    "persona": "logged-in user",
+    "want": "my session to refresh automatically",
+    "so_that": "I don't get logged out during active use",
+    "acceptance_criteria": [
+      "POST /api/auth/refresh accepts refresh token",
+      "Returns new access token and refresh token",
+      "Refresh token rotation implemented",
+      "Old refresh tokens invalidated",
+      "Rate limiting on refresh endpoint"
+    ],
+    "priority": "high",
+    "epic": "Authentication",
+    "component": "auth",
+    "status": "done",
+    "layer": "backend"
+  },
+  {
+    "id": "US-019",
+    "title": "Navigation Header Component",
+    "persona": "user",
+    "want": "see a navigation header on all pages",
+    "so_that": "I can easily navigate the application",
+    "acceptance_criteria": [
+      "Logo links to home page",
+      "Navigation links to main sections",
+      "User avatar dropdown when logged in",
+      "Login/Register buttons when logged out",
+      "Mobile-responsive hamburger menu",
+      "Active link highlighting"
+    ],
+    "priority": "medium",
+    "epic": "UI Components",
+    "component": "utils",
+    "status": "done",
+    "layer": "frontend"
+  },
+  {
+    "id": "US-020",
+    "title": "Toast Notification System",
+    "persona": "user",
+    "want": "see feedback notifications for my actions",
+    "so_that": "I know when operations succeed or fail",
+    "acceptance_criteria": [
+      "Success, error, warning, and info toast types",
+      "Auto-dismiss after configurable duration",
+      "Manual dismiss button",
+      "Stack multiple toasts vertically",
+      "Accessible with ARIA live regions",
+      "Animation for enter/exit"
+    ],
+    "priority": "medium",
+    "epic": "UI Components",
+    "component": "utils",
+    "status": "done",
+    "layer": "frontend"
+  }
+]
