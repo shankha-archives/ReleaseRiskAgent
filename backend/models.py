@@ -3,7 +3,31 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone
 import uuid
 
-# PR Models
+# MR Models (GitLab)
+class MRSubmission(BaseModel):
+    """MR submission request"""
+    project_id: str  # GitLab project ID or path (e.g., "username/repo")
+    mr_iid: int  # Merge Request internal ID
+    
+class MRData(BaseModel):
+    """MR data from GitLab"""
+    project_id: str
+    mr_iid: int
+    title: str
+    description: Optional[str] = None
+    author: str
+    source_branch: str
+    target_branch: str
+    state: str
+    web_url: str
+    sha: str  # Current commit SHA
+    created_at: str
+    updated_at: str
+    files_changed: int
+    additions: int
+    deletions: int
+
+# PR Models (Legacy - for backward compatibility)
 class PRSubmission(BaseModel):
     """PR submission request"""
     pr_url: Optional[str] = None
