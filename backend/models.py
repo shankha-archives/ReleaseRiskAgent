@@ -98,6 +98,23 @@ class Mitigation(BaseModel):
     status: str = "draft"  # draft, pending_approval, approved, rejected, completed
     confidence: float = Field(ge=0, le=1)
 
+class TestImpactAnalysis(BaseModel):
+    """Test impact analysis results"""
+    impacted_tests: List[str] = Field(default_factory=list)
+    impact_count: int = 0
+    total_tests: int = 0
+    impact_ratio: float = 0.0
+    impact_by_file: Dict[str, List[Dict[str, Any]]] = Field(default_factory=dict)
+
+class RegressionTest(BaseModel):
+    """Regression test recommendation"""
+    category: str  # impacted_tests, smoke_tests, integration_tests
+    priority: str  # critical, high, medium, low
+    test_count: Optional[int] = None
+    description: str
+    tests: List[str] = Field(default_factory=list)
+    estimated_duration: Optional[str] = None
+
 class PRAnalysis(BaseModel):
     """Complete PR analysis result"""
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -108,12 +125,22 @@ class PRAnalysis(BaseModel):
     author: str
     title: str
     
+    # GitLab specific
+    project_id: Optional[str] = None
+    mr_iid: Optional[int] = None
+    current_sha: Optional[str] = None  # Track commit SHA for change detection
+    is_outdated: bool = False  # Flag if new commits since last analysis
+    
     # Analysis components
     risk_score: RiskScore
     static_analysis: List[StaticAnalysisResult] = Field(default_factory=list)
     test_cases: List[TestCase] = Field(default_factory=list)
     test_results: List[TestResult] = Field(default_factory=list)
     mitigations: List[Mitigation] = Field(default_factory=list)
+    
+    # RAG-based analysis
+    test_impact: Optional[TestImpactAnalysis] = None
+    regression_tests: List[RegressionTest] = Field(default_factory=list)
     
     # Metadata
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
