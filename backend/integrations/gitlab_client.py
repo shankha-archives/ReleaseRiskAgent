@@ -126,3 +126,43 @@ class GitLabClient:
         except Exception as e:
             logger.error(f"Failed to check commits for {project_id}!{mr_iid}: {e}")
             return False
+
+    def post_mr_comment(self, project_id: str, mr_iid: int, comment: str):
+        """Post a comment to the MR"""
+        try:
+            project = self.get_project(project_id)
+            mr = project.mergerequests.get(mr_iid)
+            mr.notes.create({'body': comment})
+            logger.info(f"Posted comment to MR !{mr_iid}")
+        except Exception as e:
+            logger.error(f"Failed to post comment to MR !{mr_iid}: {e}")
+            raise
+
+    def post_discussion(self, project_id: str, mr_iid: int, file_path: str, line: int, body: str, side: str = 'new'):
+        """Post an inline comment (discussion) on a specific line"""
+        try:
+            project = self.get_project(project_id)
+            mr = project.mergerequests.get(mr_iid)
+            
+            # Needed for GitLab to know where to put the comment
+            # We need the SHA of the head commit
+            sha = mr.sha
+            
+            position = {
+                'base_sha': mr.diff_refs['base_sha'],
+                'start_sha': mr.diff_refs['start_sha'],
+                'head_sha': sha,
+                'position_type': 'text',
+                'new_path': file_path,
+                'new_line': line
+            }
+            
+            mr.discussions.create({
+                'body': body,
+                'position': position
+            })
+            logger.info(f"Posted inline comment on {file_path}:{line}")
+        except Exception as e:
+            logger.error(f"Failed to post inline comment to MR !{mr_iid} on {file_path}:{line}: {e}")
+            # Fallback to main comment if inline fails
+            self.post_mr_comment(project_id, mr_iid, f"**Comment on {file_path}:{line}**\n{body}")

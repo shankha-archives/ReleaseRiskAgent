@@ -3,7 +3,10 @@
 # IDE and editors
 .idea/
 .vscode/
-
+backend/.env
+.venv
+.emergent
+test_result.md
 # Dependencies
 node_modules/
 /node_modules

@@ -8,11 +8,11 @@ from pathlib import Path
 from typing import List, Optional
 import uuid
 
-from models import (
+from backend.models import (
     PRSubmission, PRAnalysis, MitigationApproval, 
     ReleaseTrain, ExecutionTrace
 )
-from pr_review_agent import PRReviewAgent
+from backend.agents.pr_review_agent import PRReviewAgent
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')

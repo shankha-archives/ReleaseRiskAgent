@@ -1,7 +1,7 @@
 """Risk scoring engine based on R³ methodology"""
 import math
 from typing import List, Dict, Any
-from models import RiskSignals, RiskScore
+from backend.models import RiskSignals, RiskScore
 import re
 
 # Weights for risk formula (tunable)
@@ -198,27 +198,30 @@ class RiskEngine:
         )
     
     def _generate_explanation(self, signals: RiskSignals, score: float, level: str) -> str:
-        """Generate human-readable explanation"""
-        parts = [f"Risk: {level.upper()} ({score:.2f})."]
+        """Generate human-readable explanation with transparency"""
+        parts = [f"**Risk Level**: {level.upper()} ({score:.2f})"]
         
-        reasons = []
-        if signals.churn > 0.5:
-            reasons.append("high code churn")
-        if signals.coverage_gap > 0.5:
-            reasons.append(f"low coverage ({(1-signals.coverage_gap)*100:.0f}%)")
-        if signals.incident_hotspot > 0.3:
-            reasons.append("incident-prone paths")
-        if signals.flake_proximity > 0.2:
-            reasons.append("flaky tests nearby")
-        if signals.diff_risk > 0.3:
-            reasons.append("changes in critical paths (auth/payment/infra)")
-        if signals.time_pressure > 0.3:
-            reasons.append("time pressure (near freeze/stacked)")
+        # Detailed breakdown
+        details = []
+        if signals.churn > 0.4:
+            details.append(f"- **High Churn**: {signals.churn:.2f} (Large volume of code changes relative to file count)")
         
-        if reasons:
-            parts.append("Why: " + ", ".join(reasons) + ".")
-        
-        return " ".join(parts)
+        if signals.coverage_gap > 0.4:
+            coverage_pct = (1.0 - signals.coverage_gap) * 100
+            details.append(f"- **Low Coverage**: {coverage_pct:.1f}% estimated (Gap: {signals.coverage_gap:.2f})")
+            
+        if signals.incident_hotspot > 0.2:
+            details.append(f"- **Hotspot**: Modified files have history of incidents")
+            
+        if signals.diff_risk > 0.2:
+            details.append(f"- **Critical Paths**: Changes touch sensitive areas (Auth, Payment, Infra)")
+
+        if not details:
+            parts.append("Changes appear to be low risk and well-scoped.")
+        else:
+            parts.append("\n**Drivers:**\n" + "\n".join(details))
+            
+        return "\n".join(parts)
     
     def _generate_citations(self, signals: RiskSignals) -> List[str]:
         """Generate citations for risk score"""

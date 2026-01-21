@@ -21,8 +21,12 @@ distro==1.9.0
 dnspython==2.8.0
 ecdsa==0.19.1
 email-validator==2.3.0
-emergentintegrations==0.1.0
+chromadb==0.4.22
 fastapi==0.110.1
+python-gitlab==4.4.0
+# pinecone-client==5.0.0
+slack_bolt==1.18.0
+slack_sdk==3.27.0
 fastuuid==0.14.0
 filelock==3.20.2
 flake8==7.3.0
@@ -77,7 +81,7 @@ motor==3.3.1
 multidict==6.7.0
 mypy==1.19.1
 mypy_extensions==1.1.0
-numpy==2.4.0
+numpy<2.0.0
 oauthlib==3.3.1
 openai==2.15.0
 orjson==3.11.5

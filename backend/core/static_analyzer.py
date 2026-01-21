@@ -2,6 +2,7 @@
 import ast
 import re
 from typing import List, Dict, Any
+from backend.models import StaticAnalysisResult
 from radon.complexity import cc_visit
 from radon.metrics import mi_visit
 import subprocess

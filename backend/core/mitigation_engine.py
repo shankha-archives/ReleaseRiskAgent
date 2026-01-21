@@ -1,6 +1,6 @@
 """Mitigation recommendation engine"""
 from typing import List, Dict, Any
-from models import Mitigation, RiskScore
+from backend.models import Mitigation, RiskScore
 import uuid
 
 class MitigationEngine:

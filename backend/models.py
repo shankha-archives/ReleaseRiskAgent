@@ -80,6 +80,8 @@ class TestCase(BaseModel):
     test_code: str
     test_type: str  # unit, integration, e2e
     description: str
+    predicted_status: str = "pass"
+    failure_reason: str = ""
 
 class TestResult(BaseModel):
     """Test execution result"""
